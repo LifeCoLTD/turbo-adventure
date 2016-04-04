@@ -1,0 +1,38 @@
+#include<iostream>
+using namespace std;
+struct Person
+{
+    char name[20];
+    unsigned long id;
+    float salary;
+};
+Person alone[6]={{"John",12345,486},
+                 {"Bob",32154,777},
+                 {"Suine",54123,888},
+                 {"Fukk",87941,999},
+                 {"Shtt",48951,354},
+                 {"Love",46841,1111}
+                };
+int main()
+{
+    Person temple;
+    for(int i=1;i<6;i++)
+    {
+        for(int j=0;j<=(5-i);j++)
+        {
+            if(alone[j].salary>alone[j+1].salary)
+            {
+                temple=alone[j];
+                alone[j]=alone[j+1];
+                alone[j+1]=temple;
+            }
+        }
+
+    }
+    for(int i=0;i<6;i++)
+    {
+        cout<<"name:"<<alone[i].name<<" "
+            <<"id:"<<alone[i].id<<" "
+            <<"salary:"<<alone[i].salary<<endl;
+    }
+}
