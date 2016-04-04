@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+void move(char A,char B,char C,int n);
+int sum(int n);
+
+int main()
+{
+    int n,ret,all;
+    char a,b,c;
+    do{
+    printf("please the number of bar(>0) and the pillar code\n");
+    ret=scanf("%d,%c,%c,%c",&n,&a,&b,&c);
+    }while(n<1||ret!=4);
+    all=sum(n);
+    printf("the total number of steps is %d!\n",all);
+    move(a,b,c,n);
+    return 0;
+}
+
+int sum(int n)
+{
+    if(n==1)
+    return 1;
+    else
+        return sum(n-1)*2+1;
+
+}
+void move(char a,char b,char c,int n)
+{
+
+
+   static int i=0;
+    if(n==2)
+    {
+        i++;
+        printf("%d-th step:%c to %c%\n",i,a,c);
+        i++;
+        printf("%d-th step:%c to %c\n",i,a,b);
+        i++;
+        printf("%d-th step:%c to %c\n",i,c,b);
+
+    }
+    else if(n==1)
+    {
+        i++;
+         printf("%d-th step:%c to %c%\n",i,a,b);
+    }
+    else
+    {
+        move(a,c,b,n-1);
+        move(a,b,c,1);
+        move(c,b,a,n-1);
+    }
+}
