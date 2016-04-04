@@ -1,0 +1,37 @@
+#include <stdio.h>
+void Jishu(int n);
+
+int main()
+{
+    int n;
+    printf("input n\n");
+    while(scanf("%d",&n)!=EOF)
+    {
+        Jishu(2*n-1);
+
+    }
+        return 0;
+}
+
+
+void Jishu(int n)
+{
+    int i,j,k=0,l=1;
+    {
+        for(j=n+2;j=j-2;j>=1)
+        {
+           l++;
+           if(j>=0)
+            {for(i=j;i--;i>=0)
+        {
+            printf("*");
+          }printf("\n");
+       k=l;
+        while(k!=1)
+        {printf(" ");
+        k--;
+        }}else break;
+
+        }
+     }
+}
