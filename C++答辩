@@ -1,0 +1,264 @@
+#include<iostream>
+#include<stdio.h>
+#include"Saving.h"
+#include"Checking.h"
+#include"Creditcard.h"
+using namespace std;
+int main()
+{
+    int t,n,i=0,k=0,m,j=0,a,b,c,d;
+    int number,remittance,code;
+    float balance;
+    Saving *Sa[10];
+    Checking *Ch[10];
+    Creditcard *Cr[10];
+    begin:
+    cout<<"                请输入1,2,3,0"<<endl;
+    cout<<"                1:建立银行账户  "<<endl;
+    cout<<"                2:存款"<<endl;
+    cout<<"                3:取款"<<endl;
+    cout<<"                4:汇款（Checking专有）"<<endl;
+    cout<<"                0:退出程序"<<endl;
+    while(scanf("%d",&t)!=EOF)
+    {
+        if(t==1)
+        {
+            cout<<"请选择要建立的银行账户类型：1、Saving 2、Checking 3、Creditcard\n";
+            scanf("%d",&n);
+            switch(n)
+            {
+            case 1:
+                cout<<"请输入自定义的银行卡号\n";
+                scanf("%d",&number);
+                Sa[i]=new Saving();
+                Sa[i]->setaccount(number);
+                Sa[i]->display();
+                cout<<"系统分配的银行卡序号"<<i<<endl;
+                i++;break;
+            case 2:
+                cout<<"请输入自定义的银行卡号\n";
+                scanf("%d",&number);
+                Ch[j]=new Checking();
+                Ch[j]->setaccount(number);
+                Ch[j]->display();
+                cout<<"系统分配的银行卡序号"<<j<<endl;
+                j++;break;
+            case 3:
+                cout<<"请输入自定义的银行卡号\n";
+                scanf("%d",&number);
+                cout<<"请设置密码\n";
+                scanf("%d",&code);
+                Cr[k]=new Creditcard();
+                Cr[k]->setcode(code);
+                Cr[k]->setaccount(number);
+                Cr[k]->display();
+                cout<<"系统分配的银行卡序号"<<k<<endl;
+                k++;break;
+            default:
+                cout<<"输入有误请重新输入\n";break;
+            }
+            goto begin;
+
+        }else if(t==2)
+        {
+            cout<<"输入账户类型1、Saving 2、Checking 3、Creditcard\n";
+            scanf("%d",&m);
+            switch(m)
+            {
+            case 1:
+                cout<<"请输入系统分配的银行卡编号\n";
+                scanf("%d",&a);i=a;
+                cout<<"请输入存钱额\n";
+                scanf("%f",&balance);
+                Sa[i]->deposit(balance);break;
+            case 2:
+                cout<<"请输入系统分配的银行卡编号\n";
+                scanf("%d",&a);j=a;
+                cout<<"请输入存钱额\n";
+                scanf("%f",&balance);
+                Ch[j]->deposit(balance);break;
+            case 3:
+                cout<<"请输入系统分配的银行卡编号\n";
+                scanf("%d",&a);k=a;
+                cout<<"请输入存钱额\n";
+                scanf("%f",&balance);
+                Cr[k]->deposit(balance);break;
+            default:
+                cout<<"输入有误\n";
+                }
+            goto begin;
+        }else if(t==3)
+        {
+            cout<<"输入账户类型1、Saving 2、Checking 3、Creditcard\n";
+            scanf("%d",&b);
+            switch(b)
+            {
+            case 1:
+                cout<<"请输入系统分配的银行卡编号\n";
+                scanf("%d",&b);i=b;
+                cout<<"请输入取钱额\n";
+                scanf("%f",&balance);
+                if(Sa[i]->judge(balance)==0){break;}
+                Sa[i]->withdraw(balance);break;
+            case 2:
+                cout<<"请输入系统分配的银行卡编号\n";
+                scanf("%d",&b);j=b;
+                cout<<"请输入取钱额\n";
+                scanf("%f",&balance);
+                if(Ch[i]->judge(balance)==0){break;}
+                Ch[i]->withdraw(balance);break;
+            case 3:
+                cout<<"请输入系统分配的银行卡编号\n";
+                scanf("%d",&b);i=b;
+                cout<<"请输入密码\n";
+                scanf("%d",&code);
+                if(Cr[k]->confcode(code)==0){goto begin;}
+                cout<<"请输入取钱额\n";
+                scanf("%f",&balance);
+                if(Cr[i]->judge(balance)==0){break;}
+                Cr[i]->withdraw(balance);break;
+            }
+            goto begin;
+        }else if(t==4)
+        {
+            cout<<"请输入系统分配的银行卡编号\n";
+                scanf("%d",&c);j=c;
+                cout<<"请输入汇款方式：1、即时到账 2、隔日到账\n";
+                scanf("%d",&d);
+                cout<<"请输入汇款额\n";
+                scanf("%f",&balance);
+                if(Ch[i]->judge(balance)==0){goto begin;}
+                Ch[i]->setRemit(d,balance); goto begin;
+
+        }else if(t==0)
+        {
+            return 0;
+        }
+
+    }
+    return 0;
+}
+
+#include<iostream>
+#ifndef ACCOUNT_H_
+#define ACCOUNT_H_
+using namespace std;
+class Account
+{public:
+    Account(int num,float bal);
+    void display();
+    void deposit(float bal);
+    void withdraw(float bal);
+    void setaccount(int num);
+    int judge(float bal);
+protected:
+    int number;
+    float balance;
+};
+Account::Account(int num,float bal)
+{
+    this->number=num;
+    this->balance=bal;
+}
+void Account::display()
+{
+    cout<<"Your number is "<<number<<endl
+        <<"Your balance is "<<balance<<endl;
+}
+void Account::deposit(float bal)
+{
+    this->balance+=bal;
+    cout<<"Success deposit\n";
+    cout<<"Deposit is"<<bal<<endl;
+    cout<<"Your balance is "<<balance<<endl;
+}
+void Account::withdraw(float bal)
+{
+    this->balance-=bal;
+    cout<<"Success withdrawals\n";
+    cout<<"Withdrawals is"<<bal<<endl;
+    cout<<"Your balance is "<<balance<<endl;
+}
+void Account::setaccount(int num)
+{
+    this->number=num;
+    cout<<"Your account is built successfully\n";
+}
+int Account::judge(float bal)
+{
+    if((balance-bal)<0){cout<<"Óà¶î²»×ã\n";return 0;}
+}
+#endif
+
+#include<iostream>
+#include"Account.h"
+#ifndef SAVING_H_
+#define SAVING_H_
+using namespace std;
+class Saving:public Account
+{
+public:
+    Saving():Account(0,0.0)
+    {
+        this->number=0;
+        this->balance=0.0;
+    }
+
+};
+
+
+#endif
+#include<iostream>
+#include"Account.h"
+#ifndef CHECKING_H_
+#define CHECKING_H_
+using namespace std;
+class Checking:public Account
+{public:
+    Checking():Account(0,0.0){}
+    void setRemit(int re,float bal);
+protected:
+    int remittance;
+};
+void Checking::setRemit(int re,float bal) //汇款方式1，手续费50
+{
+    this->balance-=bal;
+    this->remittance=re;
+    if(remittance==1){this->balance-=50;cout<<"the fee is 50"<<endl;}
+    else if(remittance==2){this->balance-=30;cout<<"the fee is 30"<<endl;}//汇款方式2，手续费30
+    cout<<"Remittances are"<<bal<<endl;
+    cout<<"Your balance is "<<balance<<endl;
+}
+#endif
+#include<iostream>
+#include"Account.h"
+#ifndef CREDITCARD_H_
+#define CREDITCARD_H_
+using namespace std;
+class Creditcard:public Account
+{
+public:
+    Creditcard():Account(0,5000)
+    {
+        this->code=1111;
+    }
+    int confcode(int co);
+    void setcode(int co);
+    void setaccount(int num);
+protected:
+    int code;
+};
+void Creditcard::setcode(int co)
+{
+    this->code=co;
+}
+int Creditcard::confcode(int co)
+{
+    if(this->code==co){cout<<"the code is right\n";}
+    else {cout<<"the code is wrong\n";return 0;}
+}
+void Creditcard::setaccount(int num)
+{
+    this->number=num;
+}
+#endif
